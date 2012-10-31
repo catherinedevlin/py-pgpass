@@ -4,7 +4,16 @@ from item import item
 from fluent_items import fluent_items
 
 
-class pgpass_items():
+class pgpass_items(object):
+    def __getattribute__(self, key):
+        try:  # exists
+            return super(pgpass_items, self).__getattribute__(key)
+        except AttributeError, e:  # not exists
+            for i in self[:]:
+                if i.database==key:
+                    return i
+            raise AttributeError
+
     def __getslice__(self, i, j):
         rows = pgpass_csv.rows(pgpass.filename)
         result = []

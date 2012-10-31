@@ -1,3 +1,6 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm.session import sessionmaker
+
 def valid_port(v):
     return str(v).isdigit() and 0 <= int(v) <= 65535
 
@@ -17,7 +20,7 @@ class item(object):
 
         self.host = host
         self.port = port
-        if self.port.isdigit():
+        if str(self.port).isdigit():
             self.port = int(self.port)
         self.database = database
         self.user = user
@@ -44,6 +47,26 @@ class item(object):
             self._password = v
         else:
             raise ValueError("Empty password")
+
+    @property
+    def url(self):
+        return 'postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(db)s' % \
+    {
+        "user"  :   self.user, \
+        "password"  :   self.password, \
+        "host"  :   self.host, \
+        "port"      :   self.port, \
+        "db"      :   self.database
+    }
+
+    @property
+    def engine(self):
+        return create_engine(self.url,echo=False)
+
+    @property
+    def session(self):
+        return sessionmaker(bind=self.engine)(autocommit=False)
+
 
     def __str__(self):
         return "%(host)s:%(port)s:%(database)s:%(user)s:%(password)s" % \

@@ -1,5 +1,7 @@
 Installing
 ----------
+
+	sudo pip install sqlalchemy # requires
 	sudo pip install pgpass
 
 Usage
@@ -30,3 +32,15 @@ Usage
 	pgpass.items.host("*") # delete all rows where host is star only!
 	pgpass.items.host("127.0.0.1").port(5432).database("dbname").delete()
 	pgpass.items.port(5431).delete()
+
+	# shorthands:
+	# to access item with 127.0.0.1:5432:mydb:user:secret
+	print pgpass.items.mydb.user, pgpass.items.mydb.password
+	>>> user secret
+	# sqlalchemy:
+	print pgpass.items.mydb.url 
+	>>> "postgresql://user:secret@127.0.0.1:5432/mydb"
+	print pgpass.items.mydb.engine
+	>>> Engine(postgresql://user:secret@127.0.0.1:5432/mydb)
+	print pgpass.items.mydb.session  # AutoCommit=True
+	>>> <sqlalchemy.orm.session.SessionMaker object>

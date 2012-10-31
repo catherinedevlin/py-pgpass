@@ -1,5 +1,7 @@
 import unittest
+from sqlalchemy.engine.base import Engine
 from pgpass.item import item
+
 
 
 class TestItem (unittest.TestCase):
@@ -34,6 +36,33 @@ class TestItem (unittest.TestCase):
     def test_user(self):
         self.assertEqual(self.item(**dict(user="user")).user, "user")
         self.assertEqual(self.item().user, "*")
+
+    def test_url(self):
+        self.assertEqual(self.item(**dict(
+            host="127.0.0.1",
+            port=5432,
+            database="test",
+            user="user")
+        ).url,"postgresql://user:password@127.0.0.1:5432/test")
+
+    def test_engine(self):
+        engine=self.item(**dict(
+            host="127.0.0.1",
+            port=5432,
+            database="test",
+            user="user")
+        ).engine
+        self.assertEqual(engine.__class__,Engine)
+
+    def test_session(self):
+        session=self.item(**dict(
+            host="127.0.0.1",
+            port=5432,
+            database="test",
+            user="user")
+        ).session
+        self.assertEqual(session.__class__.__name__,"SessionMaker")
+
 
     def test_str(self):
         self.assertEqual(

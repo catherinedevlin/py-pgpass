@@ -1,4 +1,5 @@
 import os
+import sys
 from pgpass_items import pgpass_items
 
 filename = os.path.expanduser("~/.pgpass")
@@ -40,3 +41,11 @@ def password(host="*", port="*", database="*", user="*"):
                          k.database == "*",
                          k.port == "*",
                          k.host == "*"))[0].password
+
+def shorthands():
+  global items
+  for item in items:
+    setattr(sys.modules[__name__],item.database,item)
+
+#shorthands()
+#print sys.modules[__name__].
