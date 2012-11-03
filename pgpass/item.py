@@ -65,7 +65,13 @@ class item(object):
 
     @property
     def session(self):
-        return sessionmaker(bind=self.engine)(autocommit=False)
+        session=sessionmaker(bind=self.engine)(autocommit=True,autoflush=True)
+        def add(self,instance):
+            super(session.__class__,session).add(instance)
+            if self.autoflush:
+                self.flush() # auto flush
+        session.__class__.add=add
+        return session
 
 
     def __str__(self):

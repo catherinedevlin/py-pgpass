@@ -42,5 +42,5 @@ Usage
 	>>> "postgresql://user:secret@127.0.0.1:5432/mydb"
 	print pgpass.items.mydb.engine
 	>>> Engine(postgresql://user:secret@127.0.0.1:5432/mydb)
-	print pgpass.items.mydb.session  # AutoCommit=True
+	print pgpass.items.mydb.session  # autocommit=True,autoflush=True
 	>>> <sqlalchemy.orm.session.SessionMaker object>

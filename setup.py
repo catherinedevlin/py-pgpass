@@ -3,6 +3,11 @@
 
 from distutils.core import setup
 import os
+from os.path import abspath, dirname, join
+
+
+readme = open(join(dirname(abspath(__file__)),'README.rst')).read()
+
 
 
 def is_package(path):
@@ -29,6 +34,7 @@ def find_packages(path, base=""):
 setup(name='pgpass',
       version='0.0.1',
       description='utils for work with ~/.pgpass PostgreSQL',
+      long_description=readme,
       author='cancerhermit',
       author_email='cancerhermit@gmail.com',
       url='http://github.com/cancerhermit/py-pgpass/',
