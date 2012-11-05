@@ -32,7 +32,7 @@ def find_packages(path, base=""):
     return packages
 
 setup(name='pgpass',
-      version='0.0.1',
+      version='0.0.2',
       description='utils for work with ~/.pgpass PostgreSQL',
       long_description=readme,
       author='cancerhermit',

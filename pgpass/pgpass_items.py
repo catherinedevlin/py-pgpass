@@ -12,7 +12,7 @@ class pgpass_items(object):
             for i in self[:]:
                 if i.database==key:
                     return i
-            raise AttributeError
+            raise AttributeError("database %s not found in ~/.pgpass" % key)
 
     def __getslice__(self, i, j):
         rows = pgpass_csv.rows(pgpass.filename)
