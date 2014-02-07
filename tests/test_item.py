@@ -45,6 +45,22 @@ class TestItem (unittest.TestCase):
             user="user")
         ).url,"postgresql://user:password@127.0.0.1:5432/test")
 
+    def test_complete_url(self):
+        items = self.item(**dict(
+            host="127.0.0.1",
+            port=5432,
+            database="test",
+            user="user")
+        )
+        self.assertEqual(items.complete_url(""),
+                         "postgresql://user:password@127.0.0.1:5432/test")
+        self.assertEqual(items.complete_url("postgresql://@otherhost/otherdb"),
+                         "postgresql://user:password@otherhost:5432/otherdb")
+        self.assertEqual(items.complete_url("postgresql://otheruser@otherdb"),
+                         "postgresql://otheruser:password@127.0.0.1:5432/otherdb")
+        self.assertEqual(items.complete_url("postgresql://otheruser:otherpassword@otherhost:1234/otherdb"),
+                         "postgresql://otheruser:otherpassword@otherhost:1234/otherdb")
+
     def test_engine(self):
         engine=self.item(**dict(
             host="127.0.0.1",

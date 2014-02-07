@@ -40,6 +40,8 @@ Usage
 	# sqlalchemy:
 	print pgpass.items.mydb.url 
 	>>> "postgresql://user:secret@127.0.0.1:5432/mydb"
+	print pgpass.items.mydb.complete_url("postgresql://user2@host2/db2")
+	>>> "postgresql://user2:secret@host2:5432/db2"
 	print pgpass.items.mydb.engine
 	>>> Engine(postgresql://user:secret@127.0.0.1:5432/mydb)
 	print pgpass.items.mydb.session  # autocommit=True,autoflush=True
