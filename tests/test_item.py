@@ -61,7 +61,7 @@ class TestItem (unittest.TestCase):
             database="test",
             user="user")
         ).session
-        self.assertEqual(session.__class__.__name__,"SessionMaker")
+        self.assertEqual(session.__class__.__name__,"Session")
 
 
     def test_str(self):
