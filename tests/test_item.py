@@ -60,6 +60,17 @@ class TestItem (unittest.TestCase):
                          "postgresql://otheruser:password@127.0.0.1:5432/otherdb")
         self.assertEqual(items.complete_url("postgresql://otheruser:otherpassword@otherhost:1234/otherdb"),
                          "postgresql://otheruser:otherpassword@otherhost:1234/otherdb")
+        
+    def test_complete_url_when_stars(self):
+        items_with_stars = self.item(**dict(
+            host="*",
+            port="*",
+            database="test",
+            user="*",
+            password="secret")
+           )
+        self.assertEqual(items_with_stars.complete_url("postgresql://@otherhost/otherdb"),
+                         "postgresql://:secret@otherhost/otherdb")
 
     def test_engine(self):
         engine=self.item(**dict(

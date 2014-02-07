@@ -52,7 +52,7 @@ class item(object):
     url_splitter = re.compile(
         r'(?P<rdbms>[^:]+)://(?P<user>[^:]*)(:(?P<password>[^@]*))?@((?P<host>[^/:]*)(:(?P<port>\d+))?/)?(?P<db>.*)')
 
-    url_template = 'postgresql://%(user)s:%(password)s@%(host)s:%(port)s/%(db)s' 
+    url_template = 'postgresql://%(user)s:%(password)s@%(host)s%(port)s/%(db)s' 
    
     def _params(self):
         return {
@@ -73,11 +73,16 @@ class item(object):
             raise ValueError("Not recognized as SQLAlchemy URL: %s" % mix_with)
         params = self._params()
         new_params = {k: (match.groupdict()[k] or params[k] or '') for k in params}
+        new_params = {k: '' if new_params[k] == '*' else new_params[k] for k in new_params}
+        if new_params['port']:
+            new_params['port'] = ':%s' % new_params['port']
         return self.url_template % new_params
         
     @property
     def url(self, mix_with=None):
-        return self.url_template % self._params()
+        params = self._params()
+        params['port'] = ':%s' % params['port']
+        return self.url_template % params
 
     @property
     def engine(self):
